@@ -98,5 +98,46 @@ DATA (sequences)
 -NUMITER=n     :maximum number of iterations to perform
 -NOWEIGHTS     :disable sequence weighting
 
-- These steps woulf provide a NJ tree using -tree command, the least costly alignment of sequences -ALIGN and the PIM using -pim
+- These steps would provide a NJ tree using -tree command, the least costly alignment of sequences -ALIGN and the PIM using -pim
+
+#Distance & Parsimony Codes:
+note: run these commands in R studio 
+
+
+install.packages("adegenet", dep=TRUE)
+install.packages("phangorn", dep=TRUE)
+
+install.packages("igraph", type = "binary")
+
+library(stats)
+library(ade4)
+library(ape)
+
+library(adegenet)
+library(phangorn)
+
+#DistanceBased
+dna <-dna <- fasta2DNAbin(file=Users/jamiewarner/Documents/PCancerVariantData.fasta)
+
+
+D <- dist.dna(dna, model="TN93")
+
+tre <- nj(D)
+
+tre <- ladderize(tre)
+
+plot(tre, cex=.6)
+title("A simple NJ tree")
+
+#ParsimonyBased
+dna <- fasta2DNAbin(file=Users/jamiewarner/Documents/PCancerVariantData.fasta)
+dna2 <- as.phyDat(dna)
+
+tre.ini <- nj(dist.dna(dna,model="raw"))
+parsimony(tre.ini, dna2)
+tre.pars <- optim.parsimony(tre.ini, dna2)
+
+
+plot(tre.pars, cex=0.6)
+
 
